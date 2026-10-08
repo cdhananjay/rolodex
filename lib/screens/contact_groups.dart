@@ -1,5 +1,6 @@
 import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:rolodex/data/contact.dart';
+import 'package:rolodex/screens/contacts.dart';
 
 import '../data/contact_group.dart';
 import '../main.dart';
@@ -12,7 +13,12 @@ class ContactGroupsPage extends StatelessWidget {
     return _ContactGroupsView(
       selectedListId: 0,
       onListSelected: (list) {
-        debugPrint(list.toString());
+        Navigator.of(context).push(
+          CupertinoPageRoute(
+            title: list.title,
+            builder: 
+          (context) => ContactListsPage(listId: list.id),),
+        );
       },
     );
   }
@@ -85,3 +91,24 @@ class _ContactGroupsView extends StatelessWidget {
     );
   }
 }
+
+/// A sidebar component for selecting contact groups on large screens.
+class ContactGroupsSidebar extends StatelessWidget {
+  const ContactGroupsSidebar({
+    super.key,
+    required this.selectedListId,
+    required this.onListSelected,
+  });
+
+  final int selectedListId;
+  final void Function(int) onListSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return _ContactGroupsView(
+      selectedListId: selectedListId,
+      onListSelected: (list) => onListSelected(list.id),
+    );
+  }
+}
+
